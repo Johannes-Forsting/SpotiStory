@@ -5,10 +5,12 @@ import { StyleSheet, Text, View } from 'react-native';
 import {CLIENT_SECRET, CLIENT_ID} from '@env';
 
 export default function App() {
-  const [Data, setData] = useState(null);
   const [Token, setToken] = useState(null);
+  const [Artist, setArtist] = useState(null);
 
-    useEffect(() => {
+  let artistString = "2ZQifdPOptKHxTaYTLh0BC"
+
+    useEffect( () => {
         async function getToken(){
             const options = {
                 method: "POST",
@@ -23,27 +25,29 @@ export default function App() {
             setToken(getTokenData);
         }
         getToken();
+        async function getArtist() {
+            const options = {
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + Token.access_token.toString()
+                }
+            };
+            const getArtistData = await fetch("https://api.spotify.com/v1/artists/" + artistString, options)
+                .then(res => res.json())
+                .catch(error => console.error(error));
+            setArtist(getArtistData);
+
+        }
+        getArtist();
 
     }, [])
 
-
-  /*useEffect(() => {
-    async function fetchData() {
-      const dataFromAPI = await fetch("https://randomuser.me/api/")
-          .then(res => res.json())
-          .catch(error => console.error(error));
-      setData(dataFromAPI);
-    }
-    fetchData();
-  }, []);*/
-
   return (
       <View style={styles.container}>
-        {/*<Text>Random person from API: </Text>
-        <Text>{Data ? Data.results[0].name.title : 'Loading...'}</Text>
-        <Text>{Data ? Data.results[0].name.first : 'Loading...'}</Text>
-        <Text>{Data ? Data.results[0].name.last : 'Loading...'}</Text>*/}
+        <Text>TOKEN:</Text>
         <Text>{Token ? Token.access_token : 'Loading Token...'}</Text>
+        <Text>NAME: {Artist ? Artist.name : 'Loading Artist name...'}</Text>
+        <Text>GENRE: {Artist ? Artist.genres[0] : 'Loading genre...'}</Text>
         <StatusBar style="auto" />
       </View>
   );
