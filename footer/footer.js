@@ -1,0 +1,55 @@
+import React from 'react';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+
+export default class Footer extends React.Component {
+    render() {
+        return (
+            <View style={styles.footer}>
+                <TouchableOpacity style={[styles.button, styles.button1]}>
+                    <Text style={styles.buttonText}>Home</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.button, styles.button2]}>
+                    <Text style={styles.buttonText}>Search</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.button, styles.button1]}>
+                    <Text style={styles.buttonText}>Saved</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.button, styles.button2]}>
+                    <Text style={styles.buttonText}>Discover</Text>
+                </TouchableOpacity>
+            </View>
+        );
+    }
+}
+
+const styles = StyleSheet.create({
+    footer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        backgroundColor: '#353535',
+        height: 50,
+
+    },
+    button: {
+        paddingVertical: 20,
+        paddingHorizontal: 10,
+        width: "25%",
+        height: 90,
+
+
+    },
+    button1: {
+        backgroundColor: '#252525',
+    },
+    button2: {
+        backgroundColor: '#151515',
+    },
+
+    buttonText: {
+        fontSize: 19,
+        fontWeight: 'bold',
+        color: "#FFFFFF",
+        textAlign: 'center',
+    },
+});
