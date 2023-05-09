@@ -8,19 +8,8 @@ import {CLIENT_SECRET, CLIENT_ID} from '@env';
 export default function App() {
     const [Token, setToken] = useState(null);
     const [Artist, setArtist] = useState(null);
-    const [accessToken, setAccessToken] = useState(null);
     const [text, onChangeText] = React.useState('Useless Text');
-    const REDIRECT_URI = "localhost:8080/spotify-auth"
-    const authUrl = "https://accounts.spotify.com/authorize?client_id=" + CLIENT_ID + "&response_type=token&redirect_uri=" + REDIRECT_URI + "&scope=user-read-email%20user-read-private";
 
-    function handleNavigationStateChange(state) {
-        // Check if the WebView has navigated to the final page after the user authorizes your app
-        if (state.url.startsWith(REDIRECT_URI) && state.url.includes('access_token=')) {
-            // Extract the access token from the URL
-            const accessToken = state.url.split('access_token=')[1].split('&')[0];
-            setAccessToken(accessToken);
-        }
-    }
 
 
 
@@ -79,7 +68,12 @@ export default function App() {
 
   return (
       <View style={styles.container}>
-          <TextInput
+          <View style={styles.header}>
+              <Text style={styles.header}>SPOTI</Text>
+              <Text style={[styles.header, styles.indentet]}>STORY</Text>
+          </View>
+
+          {/*<TextInput
               style={styles.input}
               onChangeText={onChangeText}
               value={text}
@@ -92,18 +86,8 @@ export default function App() {
           />
             <Text>NAME: {Artist ? Artist.name : 'Loading Artist name...'}</Text>
             <Text>GENRE: {Artist ? Artist.genres[0] : 'Loading genre...'}</Text>
-            <StatusBar style="auto" />
-          {accessToken ? (
-              // Display your app UI with the access token
-              <Text>Access token: {accessToken}</Text>
-          ) : (
-              // Display the WebView with the Spotify authorization page
-              <WebView
-                  style={styles.webview}
-                  source={{ uri: authUrl }}
-                  onNavigationStateChange={handleNavigationStateChange}
-              />
-          )}
+            <StatusBar style="auto" />*/}
+
       </View>
   );
 
@@ -112,9 +96,10 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#353535',
     alignItems: 'center',
     display: "flex",
+      paddingTop: "20%"
 
   },
     input: {
@@ -123,5 +108,13 @@ const styles = StyleSheet.create({
         height: 40
     }, webview: {
       backgroundColor: "red"
+    },
+    header: {
+      color: "#1DB954",
+        fontSize: 30,
+        fontWeight: 'bold'
+    },
+    indentet: {
+      marginLeft: "15%",
     }
 });
