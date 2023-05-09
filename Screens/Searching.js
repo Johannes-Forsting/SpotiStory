@@ -1,6 +1,11 @@
-import {StyleSheet, Text, View, Button, TextInput, TouchableOpacity} from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import {StyleSheet, Text, View, Button, ScrollView, TextInput, TouchableOpacity} from 'react-native';
+import { StackActions } from '@react-navigation/native';
+import Footer from '../config/Footer';
+import React from "react";
 
-export default function App() {
+export default  function Searching({navigation}) {
+
     return (
         <View style={styles.container}>
             <TextInput placeholderTextColor={"#1DB954"} placeholder={"Search"} style={styles.searchInput}>
@@ -15,12 +20,14 @@ export default function App() {
                 <TouchableOpacity style={styles.searchButton}>
                     <Text style={styles.buttonText}>Search Genre</Text>
                 </TouchableOpacity>
+
             </View>
+            <Text style={styles.header}>Flot arbejde Jens.</Text>
+            <ScrollView></ScrollView>
+            <View><Footer navigation={navigation}/></View>
         </View>
-    )
+    );
 }
-
-
 const styles = StyleSheet.create({
         container: {
             flex: 1,
@@ -28,7 +35,8 @@ const styles = StyleSheet.create({
             alignItems: "center",
             justifyContent: "center",
             display: "flex",
-            gap: 100
+            gap: 100,
+            paddingTop: "20%"
         },
 
         searchButtonContainer:{
@@ -65,11 +73,12 @@ const styles = StyleSheet.create({
             color:"#252525",
             fontWeight:"bold",
 
+        },
+        header: {
+            color: "#FFFFFF",
+            fontSize: 40
+
         }
-
-
-
-
 
     }
 )

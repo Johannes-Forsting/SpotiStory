@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import {StyleSheet, Button, View, ScrollView, Text} from 'react-native';
-import Footer from '../footer/footer';
+import {StyleSheet, Button, View, ScrollView, Text, Image} from 'react-native';
+import Footer from '../config/Footer';
 import React from "react";
 
 export default function HomeScreen({ navigation }) {
@@ -8,10 +8,14 @@ export default function HomeScreen({ navigation }) {
         <View style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.header}>SPOTI</Text>
-                <Text style={[styles.header, styles.indentet]}>STORY</Text>
+                <Text style={[styles.header, styles.indented]}>STORY</Text>
             </View>
+            <Image
+                style={styles.logo}
+                source={require("../assets/SpotifyLogo.png")}
+            />
             <ScrollView></ScrollView>
-            <View>< Footer /></View>
+            <View><Footer navigation={navigation}/></View>
         </View>
     );
 }
@@ -35,13 +39,18 @@ const styles = StyleSheet.create({
     header: {
         color: "#1DB954",
         fontSize: 70,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
-    indentet: {
+    indented: {
         marginLeft: "15%",
     },
     buttons: {
         display: "flex",
         flexDirection: "row"
     },
+    logo: {
+        marginTop: "30%",
+        width: 200,
+        height: 200
+    }
 });

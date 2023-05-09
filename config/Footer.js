@@ -3,18 +3,31 @@ import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 
 export default class Footer extends React.Component {
     render() {
+        const { navigation } = this.props;
         return (
             <View style={styles.footer}>
-                <TouchableOpacity style={[styles.button, styles.button1]}>
+                <TouchableOpacity
+                    style={[styles.button, styles.button1]}
+                    onPress={() => navigation.navigate("Home")}
+                >
                     <Text style={styles.buttonText}>Home</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.button, styles.button2]}>
+                <TouchableOpacity
+                    style={[styles.button, styles.button2]}
+                    onPress={() => navigation.navigate("Search")}
+                >
                     <Text style={styles.buttonText}>Search</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.button, styles.button1]}>
+                <TouchableOpacity
+                    style={[styles.button, styles.button1]}
+                    onPress={() => navigation.navigate("Saved")}
+                >
                     <Text style={styles.buttonText}>Saved</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.button, styles.button2]}>
+                <TouchableOpacity
+                    style={[styles.button, styles.button2]}
+                    onPress={() => navigation.navigate("Discover")}
+                >
                     <Text style={styles.buttonText}>Discover</Text>
                 </TouchableOpacity>
             </View>
