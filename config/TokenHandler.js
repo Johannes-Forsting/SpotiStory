@@ -35,7 +35,6 @@ export function useToken() {
         }
         fetchData();
     }, []);
-
     return token;
 }
 

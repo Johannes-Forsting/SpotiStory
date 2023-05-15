@@ -3,16 +3,7 @@ import {StyleSheet, Button, View, ScrollView, Text, Image} from 'react-native';
 import Footer from '../config/Footer';
 import React, {useState, useEffect} from "react";
 
-
-
-
-
-
-
-
 export default function HomeScreen({ navigation }) {
-
-
     return (
         <View style={styles.container}>
             <View style={styles.header}>

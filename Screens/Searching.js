@@ -1,16 +1,18 @@
-import { StatusBar } from 'expo-status-bar';
 import {StyleSheet, Text, View, Button, ScrollView, TextInput, TouchableOpacity } from 'react-native';
-import { StackActions } from '@react-navigation/native';
 import Footer from '../config/Footer';
 import React from "react";
 import { useToken, useOptions } from '../config/TokenHandler';
-let name = []
+import {database} from "../config/firebase";
+import {collection, doc, setDoc, addDoc } from "firebase/firestore";
+import firebase from "firebase/compat";
 
+const artistCollection = 'artists'
 
 export async function findArtists(options, artist){
     const getArtists = await fetch("https://api.spotify.com/v1/search?q=" + artist.toString() + "&type=artist", options)
         .then((res) => res.json())
         .catch((error) => console.error(error));
+    console.log(options)
     return getArtists.artists.items[0].name.toString()
 }
 
@@ -18,6 +20,14 @@ function handleSearchArtist(options, search, setArtistName) {
     findArtists(options, search)
         .then((artist) => setArtistName(artist))
         .catch((error) => console.error(error));
+}
+
+async function saveArtist(options, artist){
+    const artistToFetch = await fetch("https://api.spotify.com/v1/artists/4V8LLVI7PbaPR0K2TGSxFF",options)
+        .then((res => res.json()))
+        .catch((error) => console.error(error));
+
+    await addDoc(collection(database, artistCollection), artistToFetch);
 }
 
 
@@ -53,6 +63,12 @@ export default  function Searching({navigation}) {
 
                 <TouchableOpacity style={styles.searchButton}>
                     <Text style={styles.buttonText}>Search Genre</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={styles.searchButton}
+                    onPress={() => saveArtist(options)}>
+                    <Text style={styles.buttonText}>Save Kanye</Text>
                 </TouchableOpacity>
 
             </View>

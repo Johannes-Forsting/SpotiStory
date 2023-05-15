@@ -37,7 +37,6 @@ export default function App() {
                     component={Discover}
                     options={{headerShown: false}}
                 />
-
             </Stack.Navigator>
         </NavigationContainer>
     );
