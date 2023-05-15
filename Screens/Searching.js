@@ -12,13 +12,21 @@ export async function findArtists(options, artist){
     const getArtists = await fetch("https://api.spotify.com/v1/search?q=" + artist.toString() + "&type=artist", options)
         .then((res) => res.json())
         .catch((error) => console.error(error));
-    console.log(options)
-    return getArtists.artists.items[0].name.toString()
+    const artists = []
+
+    for (let i = 0; i < 50; i++) {
+        if (getArtists.artists.items[i]){
+            artists.push(getArtists.artists.items[i])
+        }
+
+    }
+
+    return artists
 }
 
-function handleSearchArtist(options, search, setArtistName) {
+function handleSearchArtist(options, search, setArtists) {
     findArtists(options, search)
-        .then((artist) => setArtistName(artist))
+        .then((artistObjects) => setArtists(artistObjects))
         .catch((error) => console.error(error));
 }
 
@@ -30,49 +38,48 @@ async function saveArtist(options, artist){
     await addDoc(collection(database, artistCollection), artistToFetch);
 }
 
-
-
 export default  function Searching({navigation}) {
     const [textInputValue, setTextInputValue] = React.useState('');
-    const [artistName, setArtistName] = React.useState('');
+    const [artists, setArtists] = React.useState([]);
     const token = useToken();
     const options = useOptions(token);
 
 
     return (
         <View style={styles.container}>
-            <TextInput
-                placeholderTextColor={"#1DB954"}
-                placeholder={"Search"}
-                style={styles.searchInput}
-                onChangeText={text => setTextInputValue(text)}
-                value={textInputValue}
-            />
+            <View style={styles.searchInputContainer}>
+                <Text style={styles.header}>Search</Text>
+                <TextInput
+                    placeholderTextColor={"#000000"}
+                    placeholder={"What are you looking for?"}
+                    style={styles.searchInput}
+                    onChangeText={text => setTextInputValue(text)}
+                    value={textInputValue}
+                />
+            </View>
             <View style={styles.searchButtonContainer}>
                 <TouchableOpacity
                     style={styles.searchButton}
-                    onPress={() => handleSearchArtist(options, textInputValue, setArtistName)}>
+                    onPress={() => handleSearchArtist(options, textInputValue, setArtists)}>
                     <Text style={styles.buttonText}>Search Artist</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity
-                    style={styles.searchButton}
-                >
+                {/*<TouchableOpacity style={styles.searchButton}>
                     <Text style={styles.buttonText}>Search Album</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.searchButton}>
                     <Text style={styles.buttonText}>Search Genre</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    style={styles.searchButton}
-                    onPress={() => saveArtist(options)}>
-                    <Text style={styles.buttonText}>Save Kanye</Text>
-                </TouchableOpacity>
+                </TouchableOpacity>*/}
 
             </View>
-            <Text style={styles.header}>{artistName ? artistName: "waiting for name..."}</Text>
+            <ScrollView style={styles.resultsContainer}>
+                {artists.map((artist) => (
+                    <TouchableOpacity style={styles.itemButton}>
+                        <Text key={artist.id} style={styles.itemText}>{artist.name}</Text>
+                    </TouchableOpacity>
+                ))}
+            </ScrollView>
             <ScrollView></ScrollView>
             <View><Footer navigation={navigation}/></View>
         </View>
@@ -83,9 +90,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#353535',
         alignItems: "center",
-        justifyContent: "center",
-        display: "flex",
-        gap: 100,
         paddingTop: 80
     },
 
@@ -93,24 +97,34 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         display: "flex",
-        gap: 20
+        gap: 20,
+        paddingBottom:30,
+    },
+
+    searchInputContainer:{
+        paddingBottom:30,
+        paddingTop:10
+    },
+
+    resultsContainer:{
+        maxHeight:300
     },
 
     searchInput:{
-        color: "#1DB954",
-        width: 250,
-        maxHeight: 45,
+        color: "#000000",
+        width: 300,
+        maxHeight: 50,
         textAlign: "left",
         fontWeight: "bold",
         paddingHorizontal: 20,
         flex: 1,
-        backgroundColor: "#555555",
-        borderRadius: 25,
+        backgroundColor: "#FFFFFF",
+        borderRadius: 5,
     },
 
     searchButton:{
         backgroundColor:"#1Db954",
-        width:250,
+        width:200,
         maxHeight:40,
         minHeight:40,
         display: "flex",
@@ -119,15 +133,30 @@ const styles = StyleSheet.create({
         borderRadius:25,
     },
 
-    buttonText:{
-        color:"#252525",
-        fontWeight:"bold",
+    itemButton:{
+        width:300,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
 
     },
+
+    itemText:{
+        color:"#ffffff",
+        fontWeight:"bold",
+        fontSize:22,
+        padding:12
+    },
+
+    buttonText:{
+        color:"#FFFFFF",
+        fontWeight:"bold",
+    },
+
     header: {
         color: "#FFFFFF",
-        fontSize: 40
-
+        fontSize: 30,
+        paddingBottom:15,
+        fontWeight: "bold"
     }
-
 })
