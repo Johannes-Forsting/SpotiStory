@@ -44,23 +44,17 @@ const styles = StyleSheet.create({
         height: 50,
 
     },
+
     button: {
         paddingVertical: 20,
         paddingHorizontal: 10,
         width: "25%",
         height: 90,
-
-
-    },
-    button1: {
-        backgroundColor: '#252525',
-    },
-    button2: {
-        backgroundColor: '#151515',
+        backgroundColor:"#252525"
     },
 
     buttonText: {
-        fontSize: 19,
+        fontSize: 16,
         fontWeight: 'bold',
         color: "#FFFFFF",
         textAlign: 'center',

@@ -102,12 +102,12 @@ const styles = StyleSheet.create({
     },
 
     searchInputContainer:{
-        paddingBottom:30,
+        paddingBottom:20,
         paddingTop:10
     },
 
     resultsContainer:{
-        maxHeight:300
+        maxHeight:450
     },
 
     searchInput:{
@@ -124,9 +124,9 @@ const styles = StyleSheet.create({
 
     searchButton:{
         backgroundColor:"#1Db954",
-        width:200,
-        maxHeight:40,
-        minHeight:40,
+        width:300,
+        maxHeight:45,
+        minHeight:45,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
