@@ -4,7 +4,6 @@ import React from "react";
 import { useToken, useOptions } from '../config/TokenHandler';
 import {database} from "../config/firebase";
 import {collection, doc, setDoc, addDoc } from "firebase/firestore";
-import firebase from "firebase/compat";
 
 const artistCollection = 'artists'
 
@@ -75,7 +74,10 @@ export default  function Searching({navigation}) {
             </View>
             <ScrollView style={styles.resultsContainer}>
                 {artists.map((artist) => (
-                    <TouchableOpacity style={styles.itemButton}>
+                    <TouchableOpacity
+                        style={styles.itemButton}
+                        onPress={() => navigation.navigate("SingleArtist", { artist })}
+                    >
                         <Text key={artist.id} style={styles.itemText}>{artist.name}</Text>
                     </TouchableOpacity>
                 ))}
