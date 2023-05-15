@@ -80,7 +80,6 @@ const styles = StyleSheet.create({
     header: {
         color: "#FFFFFF",
         fontSize: 40,
-        fontFamily: 'sans-serif-medium',
     },
     artists: {
         display: "flex",
