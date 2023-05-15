@@ -26,30 +26,36 @@ const styles = StyleSheet.create({
         backgroundColor: '#353535',
         alignItems: 'center',
         display: "flex",
-        paddingTop: "30%"
-
+        paddingTop: "30%",
     },
     input: {
         borderWidth: 2,
         width: "50%",
         height: 40
-    }, webview: {
+    },
+
+    webview: {
         backgroundColor: "red"
     },
+
     header: {
         color: "#1DB954",
         fontSize: 70,
         fontWeight: 'bold',
+        gap: -25
     },
+
     indented: {
         marginLeft: "15%",
     },
+
     buttons: {
         display: "flex",
         flexDirection: "row"
     },
+
     logo: {
-        marginTop: "30%",
+        marginTop: "10%",
         width: 200,
         height: 200
     }
