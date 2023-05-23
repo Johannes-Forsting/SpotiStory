@@ -1,12 +1,11 @@
-import { StatusBar } from 'expo-status-bar';
+
 import {StyleSheet, Text, View, Button, ScrollView, Image, TouchableOpacity} from 'react-native';
-import { StackActions } from '@react-navigation/native';
 import Footer from '../config/Footer';
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import { useRoute } from '@react-navigation/native';
 import {useOptions, useToken} from "../config/TokenHandler";
 
-export async function findTopTracks(options, artistID) {
+async function findTopTracks(options, artistID) {
     try {
         const getTopTracks = await fetch(
             "https://api.spotify.com/v1/artists/" + artistID.toString() + "/top-tracks?market=DK", options);
@@ -20,13 +19,27 @@ export async function findTopTracks(options, artistID) {
 
 
 export default function SingleArtist({ navigation }) {
+    const [topTracks, setTopTracks] = useState([]);
     const route = useRoute();
     const { artist } = route.params;
-    const token = useToken();
-    const options = useOptions(token);
+    const options = useOptions();
+    console.log(options)
 
-
-
+    useEffect(() => {
+        const fetchTopTracks = async () => {
+            try {
+                if (options) {
+                    const response = await findTopTracks(options, artist.id);
+                    if (response && response.tracks) {
+                        setTopTracks(response.tracks);
+                    }
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchTopTracks();
+    }, [options, artist.id]);
 
 
 
@@ -34,20 +47,16 @@ export default function SingleArtist({ navigation }) {
         <View style={styles.container}>
             <View style={styles.buttons}>
 
-                <TouchableOpacity
-                    style={styles.button}
-                >
+                <TouchableOpacity style={styles.button}>
                     <Text style={styles.buttonText}>Back</Text>
                 </TouchableOpacity>
 
-
-                <TouchableOpacity
-                style={styles.button}
-                >
+                <TouchableOpacity style={styles.button}>
                     <Text style={styles.buttonText}>Follow</Text>
                 </TouchableOpacity>
 
             </View>
+
             <Image
                 style={styles.artistImage}
                 source={{
@@ -57,9 +66,13 @@ export default function SingleArtist({ navigation }) {
             <Text style={styles.header}>{artist.name}</Text>
 
             <View style={styles.topTracksView}>
-                <Text style={styles.topTracks}>Top tracks kommer til at være her i en scrollable liste</Text>
-
-
+                <Text style={styles.topTrackHeader}>Top 5 tracks</Text>
+                {topTracks.slice(0, 5).map((track) => (
+                        <Text style={styles.trackName} key={track.id}>
+                            {track.name}
+                        </Text>
+                    )
+                )}
             </View>
 
 
@@ -106,9 +119,19 @@ const styles = StyleSheet.create({
         width: 250,
         height: 250
     },
-    topTracks: {
+    topTracksView: {
+        backgroundColor: "grey",
+        width: "90%",
+        padding: 15
+    },
+    topTrackHeader: {
         alignSelf: "flex-start",
         backgroundColor: "grey",
         fontSize: 30
+    },
+    trackName: {
+        color: "#FFFFFF",
+        fontSize: 16,
+        marginTop: 5,
     }
 });

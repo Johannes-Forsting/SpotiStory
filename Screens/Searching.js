@@ -40,8 +40,8 @@ async function saveArtist(options, artist){
 export default  function Searching({navigation}) {
     const [textInputValue, setTextInputValue] = React.useState('');
     const [artists, setArtists] = React.useState([]);
-    const token = useToken();
-    const options = useOptions(token);
+    //const token = useToken();
+    const options = useOptions();
 
 
     return (
@@ -75,8 +75,9 @@ export default  function Searching({navigation}) {
             <ScrollView style={styles.resultsContainer}>
                 {artists.map((artist) => (
                     <TouchableOpacity
+                        key={artist.id}
                         style={styles.itemButton}
-                        onPress={() => navigation.navigate("SingleArtist", { artist })}
+                        onPress={() => navigation.navigate("SingleArtist", { artist, options })}
                     >
                         <Text key={artist.id} style={styles.itemText}>{artist.name}</Text>
                     </TouchableOpacity>

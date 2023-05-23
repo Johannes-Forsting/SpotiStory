@@ -38,9 +38,9 @@ export function useToken() {
     return token;
 }
 
-export function useOptions(token) {
+export function useOptions() {
     const [options, setOptions] = useState(null);
-
+    const token = useToken()
     useEffect(() => {
         if (token) {
             async function fetchOptions() {
