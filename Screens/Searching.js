@@ -77,7 +77,7 @@ export default  function Searching({navigation}) {
                     <TouchableOpacity
                         key={artist.id}
                         style={styles.itemButton}
-                        onPress={() => navigation.navigate("SingleArtist", { artist, options })}
+                        onPress={() => navigation.navigate("SingleArtist", {artist})}
                     >
                         <Text key={artist.id} style={styles.itemText}>{artist.name}</Text>
                     </TouchableOpacity>

@@ -1,5 +1,5 @@
-import { CLIENT_SECRET, CLIENT_ID } from '@env';
-import React, {useState, useEffect} from "react";
+import {CLIENT_ID, CLIENT_SECRET} from '@env';
+import React, {useEffect, useState} from "react";
 
 export async function getTokenData() {
     const options = {
@@ -12,41 +12,50 @@ export async function getTokenData() {
     const getTokenData = await fetch('https://accounts.spotify.com/api/token', options)
         .then((res) => res.json())
         .catch((error) => console.error(error));
-    return getTokenData;
+    return getTokenData
 }
+/*
+export function useToken() {
+    const [token, setToken] = useState(null);
+    async function fetchData() {
+        const tokenData = await getTokenData();
+        setToken(tokenData);
+    }
+    useEffect(() => {
+        fetchData();
+    }, []);
+    return token;
+}
+ */
 
 export async function getOptions(token) {
-    const returnOptions = {
+    return {
         method: 'GET',
         headers: {
             Authorization: `Bearer ${token}`,
         },
     };
-    return returnOptions;
-}
-
-export function useToken() {
-    const [token, setToken] = useState(null);
-
-    useEffect(() => {
-        async function fetchData() {
-            const tokenData = await getTokenData();
-            setToken(tokenData);
-        }
-        fetchData();
-    }, []);
-    return token;
 }
 
 export function useOptions() {
+    const [token, setToken] = useState(null);
     const [options, setOptions] = useState(null);
-    const token = useToken()
+
+    async function fetchData() {
+        const tokenData = await getTokenData();
+        setToken(tokenData);
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
     useEffect(() => {
         if (token) {
-            async function fetchOptions() {
+            const fetchOptions = async () => {
                 const option = await getOptions(token.access_token);
                 setOptions(option);
-            }
+            };
             fetchOptions();
         }
     }, [token]);

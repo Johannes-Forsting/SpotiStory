@@ -23,7 +23,7 @@ export default function SingleArtist({ navigation }) {
     const route = useRoute();
     const { artist } = route.params;
     const options = useOptions();
-    console.log(options)
+    console.log(options);
 
     useEffect(() => {
         const fetchTopTracks = async () => {
@@ -41,6 +41,9 @@ export default function SingleArtist({ navigation }) {
         fetchTopTracks();
     }, [options, artist.id]);
 
+    if (!options) {
+        return null; // or any loading indicator/component
+    }
 
 
     return (
