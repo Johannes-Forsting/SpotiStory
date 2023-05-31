@@ -1,13 +1,25 @@
-import {ActivityIndicator, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+    ActivityIndicator,
+    Image,
+    ImageBackground,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View
+} from 'react-native';
 import Footer from '../config/Footer';
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {useOptions} from "../config/TokenHandler";
 
 const types = ["album", "artist", "playlist", "track"];
-const randomOffset = Math.floor(Math.random() * 1000);
-const characters = 'abcdefghijklmnopqrstuvwxyz';
+
+function getRandomOffset(){
+    return Math.floor(Math.random() * 1000);
+}
 
 function getRandomQuery() {
+    const characters = 'abcdefghijklmnopqrstuvwxyz';
     let randomSearch = '';
     const randomCharacter = characters.charAt(Math.floor(Math.random() * characters.length));
     switch (Math.round(Math.random())) {
@@ -19,11 +31,12 @@ function getRandomQuery() {
             break;
     }
     randomSearch = encodeURIComponent(randomSearch)
+    console.log(randomSearch)
     return randomSearch;
 }
 
-async function fetchItem(queryString, queryType, options){
-    return await fetch("https://api.spotify.com/v1/search?q=" + queryString + "&type=" + queryType + "&offset=" + randomOffset, options)
+async function fetchItem(queryString, queryType, randomOffset, options){
+    return await fetch("https://api.spotify.com/v1/search?q=" + queryString + "&type=" + queryType + "&offset=" + randomOffset + "&limit=1", options)
         .then((res) => res.json())
         .catch((error) => console.error(error))
 }
@@ -33,36 +46,55 @@ export default function Discover({ navigation }) {
     const [itemsArray, setItemsArray] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchItems = async () => {
-            setItemsArray([]);
-            setIsLoading(true);
-            try {
-                if (options) {
-                    for (let i = 0; i < 6; i++) {
-                        const response = await fetchItem(getRandomQuery(), types[1], options);
-                        console.log(response)
-                        setItemsArray((prevItemsArray) => [...prevItemsArray, response]);
-                        console.log("https://api.spotify.com/v1/search?q=" + getRandomQuery() + "&type=" + types[1] + "&offset=" + randomOffset)
-                        console.log(itemsArray)
+    const fetchItems = useCallback(async () => {
+        setIsLoading(true);
+        try {
+            if (options) {
+                let tempItemsArray = [];
+                let fetchedIds = new Set();
+                while (tempItemsArray.length < 8) {
+                    const response = await fetchItem(getRandomQuery(), types[1], getRandomOffset(), options);
+                    let item;
+                    switch (types[1]){
+                        case 'artist':
+                            item = response.artists.items[0]
+                            break
+                        case 'album':
+                            item = response.albums.items[0]
+                            break
+                        case 'playlist':
+                            item = response.playlists.items[0]
+                            break
+                        case 'track':
+                            item = response.tracks.items[0]
+                            break
                     }
-                    setIsLoading(false);
+                    // Only add item to array if it is not undefined and not already fetched
+                    if (item && !fetchedIds.has(item.id)) {
+                        console.log(item)
+                        fetchedIds.add(item.id);
+                        tempItemsArray.push(item);
+                    }
                 }
-            } catch (error) {
-                console.error(error);
+                setItemsArray(tempItemsArray);
                 setIsLoading(false);
             }
-        };
-        fetchItems();
+        } catch (error) {
+            console.error(error);
+            setIsLoading(false);
+        }
     }, [options]);
 
 
+    useEffect(() => {
+        fetchItems();
+    }, [fetchItems]);
 
     return (
         <View style={styles.container}>
             <View style={styles.headerContainer}>
                 <Text style={styles.header}>Discover</Text>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={fetchItems} disabled={isLoading}>
                     <Image style={styles.shuffleButton} source={require("../assets/random-icon.png")}></Image>
                 </TouchableOpacity>
             </View>
@@ -71,41 +103,28 @@ export default function Discover({ navigation }) {
                     <ActivityIndicator color="#FFFFFF" size="large" />
                 ) : (
                     itemsArray.map((item) => {
-                        switch (item.artists.items[0].type) {
-                            case 'artist':
-                                return (
-                                    <TouchableOpacity style={styles.categoryContainer}>
-                                        <Text style={styles.categoryText}>Artist</Text>
-                                        <Text style={styles.itemName}>{item.artists.items[0].name}</Text>
-                                    </TouchableOpacity>
-                                );
-                            case 'album':
-                                return (
-                                    <TouchableOpacity style={styles.categoryContainer}>
-                                        <Text style={styles.categoryText}>Album</Text>
-                                    </TouchableOpacity>
-                                );
-                            case 'playlist':
-                                return (
-                                    <TouchableOpacity style={styles.categoriesContainer}>
-                                        <Text style={styles.categoryText}>Playlist</Text>
-                                    </TouchableOpacity>
-                                );
-                            case 'track':
-                                return (
-                                    <TouchableOpacity style={styles.categoriesContainer}>
-                                        <Text style={styles.categoryText}>Track</Text>
-                                    </TouchableOpacity>
-                                );
-                            default:
-                                return (
-                                    <TouchableOpacity style={styles.categoriesContainer}>
-                                        <Text style={styles.categoryText}>NO CASE MATCH</Text>
-                                    </TouchableOpacity>
-                                ); // or any other component for other types
+
+                        const imageUrl = item && item.images && item.images.length > 0 ? item.images[0].url : null;
+                        return imageUrl ? (
+                            <TouchableOpacity onPress={()=>navigation.navigate("SingleArtist",{artist: item})} key={item.id} style={styles.categoryContainer}>
+                                <ImageBackground
+                                    source={{ uri: imageUrl }}
+                                    style={styles.backgroundImage}>
+                                    {/*<Text style={styles.categoryText}>{item.type.charAt(0).toUpperCase() + item.type.slice(1)}</Text>*/}
+                                    <Text style={styles.itemName}>{item.name}</Text>
+                                </ImageBackground>
+                            </TouchableOpacity>
+                        ) : (
+                            <TouchableOpacity key={item.id} style={styles.categoryContainer}>
+                                <View style={styles.noImageBackground}>
+                                    {/*<Text style={styles.categoryText}>{item.type.charAt(0).toUpperCase() + item.type.slice(1)}</Text>*/}
+                                    <Text style={styles.itemName}>{item.name}</Text>
+                                </View>
+                            </TouchableOpacity>
+                        )
                         }
-                    })
-                )}
+
+                ))}
             </View>
             <ScrollView></ScrollView>
             <View><Footer navigation={navigation}/></View>
@@ -167,21 +186,30 @@ const styles = StyleSheet.create({
         alignItems:"center",
     },
 
-    categoryText:{
-        maxWidth:"90%",
-        color:"#FFFFFF",
-        fontWeight:"bold",
-        fontSize:18,
-    },
-
     itemName:{
         maxWidth:"90%",
         color:"#FFFFFF",
         fontWeight:"bold",
         fontSize:18,
-    }
+        textShadowOffset:{width:1, height:1},
+        textShadowRadius:2,
+        textShadowColor:"#000000",
+        alignItems:"center"
+    },
 
+    backgroundImage: {
+        flex: 1,
+        width:"100%",
+        borderRadius:.1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
 
-
+    noImageBackground: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#1Db954", // Use any color you like
+    },
 
 });
