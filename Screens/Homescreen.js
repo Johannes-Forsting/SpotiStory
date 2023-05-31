@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import {StyleSheet, Button, View, ScrollView, Text, Image} from 'react-native';
+import {StyleSheet, Button, View, ScrollView, Text, Image, ImageBackgroundBase} from 'react-native';
 import Footer from '../config/Footer';
 import React, {useState, useEffect} from "react";
 
@@ -14,6 +14,7 @@ export default function HomeScreen({ navigation }) {
                 style={styles.logo}
                 source={require("../assets/SpotifyLogo.png")}
             />
+
             <ScrollView></ScrollView>
             <View><Footer navigation={navigation}/></View>
         </View>
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#353535',
         alignItems: 'center',
         display: "flex",
-        paddingTop: "30%",
+        paddingTop: "50%",
     },
     input: {
         borderWidth: 2,

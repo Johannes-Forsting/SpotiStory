@@ -2,10 +2,6 @@ import {StyleSheet, Text, View, Button, ScrollView, TextInput, TouchableOpacity 
 import Footer from '../config/Footer';
 import React from "react";
 import { useToken, useOptions } from '../config/TokenHandler';
-import {database} from "../config/firebase";
-import {collection, doc, setDoc, addDoc } from "firebase/firestore";
-
-const artistCollection = 'artists'
 
 export async function findArtists(options, artist){
     const getArtists = await fetch("https://api.spotify.com/v1/search?q=" + artist.toString() + "&type=artist", options)
@@ -29,18 +25,11 @@ function handleSearchArtist(options, search, setArtists) {
         .catch((error) => console.error(error));
 }
 
-async function saveArtist(options, artist){
-    const artistToFetch = await fetch("https://api.spotify.com/v1/artists/4V8LLVI7PbaPR0K2TGSxFF",options)
-        .then((res => res.json()))
-        .catch((error) => console.error(error));
 
-    await addDoc(collection(database, artistCollection), artistToFetch);
-}
 
 export default  function Searching({navigation}) {
     const [textInputValue, setTextInputValue] = React.useState('');
     const [artists, setArtists] = React.useState([]);
-    //const token = useToken();
     const options = useOptions();
 
 
@@ -62,14 +51,6 @@ export default  function Searching({navigation}) {
                     onPress={() => handleSearchArtist(options, textInputValue, setArtists)}>
                     <Text style={styles.buttonText}>Search Artist</Text>
                 </TouchableOpacity>
-
-                {/*<TouchableOpacity style={styles.searchButton}>
-                    <Text style={styles.buttonText}>Search Album</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.searchButton}>
-                    <Text style={styles.buttonText}>Search Genre</Text>
-                </TouchableOpacity>*/}
 
             </View>
             <ScrollView style={styles.resultsContainer}>

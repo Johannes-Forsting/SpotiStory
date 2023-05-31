@@ -3,31 +3,32 @@ import { StyleSheet, Text, View, Button, ScrollView, Image, TouchableOpacity } f
 import { StackActions } from '@react-navigation/native';
 import Footer from '../config/Footer';
 import React, { useState, useEffect } from "react";
-import { useToken, useOptions } from '../config/TokenHandler';
 import { database } from "../config/firebase";
 import { collection, query, onSnapshot } from "firebase/firestore";
 
 const artistCollection = 'artists';
 
+export function readDB(setArtists) {
+    const collectionRef = collection(database, artistCollection);
+    const q = query(collectionRef, ref => ref.orderBy('createdAt', 'desc'));
+    onSnapshot(q, snapshot => {
+        const _artists = snapshot.docs.map(doc => {
+            return {
+                ...doc.data(),
+                key: doc.id
+            };
+        });
+        setArtists(_artists); // Update the state with the retrieved artists
+    });
+}
+
 export default function Saved({ navigation }) {
     const [artists, setArtists] = useState([]);
 
-    const readDB = async () => {
-        const collectionRef = collection(database, artistCollection);
-        const q = query(collectionRef, ref => ref.orderBy('createdAt', 'desc'));
-        onSnapshot(q, snapshot => {
-            const _artists = snapshot.docs.map(doc => {
-                return {
-                    ...doc.data(),
-                    key: doc.id
-                };
-            });
-            setArtists(_artists);
-        });
-    }
+
 
     useEffect(() => {
-        readDB();
+        readDB(setArtists); // Pass the setArtists function to the readDB function
     }, []);
 
 
@@ -41,7 +42,7 @@ export default function Saved({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.header} >Your saved artists</Text>
+            <Text style={styles.header} >YOUR SAVED ARTISTS</Text>
             <View style={styles.artists}>
                 <ScrollView style={styles.scroll}>
                     {artists.map(artist => (
@@ -50,13 +51,12 @@ export default function Saved({ navigation }) {
                             onPress={() => navigation.navigate("SingleArtist", { artist })}
                         >
                             <Image
-                                key={artist.key}
                                 style={styles.artistImage}
                                 source={{
                                     uri: artist.images[0].url,
                                 }}
                             />
-                            <Text style={styles.artistName} key={artist.key}>{checkName(artist.name, 20)}</Text>
+                            <Text style={styles.artistName} key={artist.id}>{checkName(artist.name, 20)}</Text>
                         </TouchableOpacity>
                         ))}
                 </ScrollView>
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     },
     header: {
         color: "#FFFFFF",
-        fontSize: 40,
+        fontSize: 35,
     },
     artists: {
         display: "flex",
@@ -113,7 +113,8 @@ const styles = StyleSheet.create({
     artistImage: {
         width: 50,
         height: 50,
-        marginLeft: 15
+        marginLeft: 4,
+        borderRadius: 40,
     }
 
 
