@@ -61,7 +61,6 @@ export default function Saved({navigation}) {
                         ))}
                 </ScrollView>
             </View>
-            <ScrollView></ScrollView>
             <View>
                 <Footer navigation={navigation} />
 
@@ -92,17 +91,16 @@ const styles = StyleSheet.create({
         justifyContent:"space-between",
     },
     artists: {
+        flex: 1,
         display: "flex",
         width: "100%",
         justifyContent: 'center',
-
         alignItems: "center",
-        marginTop: 30
+        marginTop: 30,
+        paddingBottom: 25
 
     },
-    scroll: {
-       height: "77%"
-    },
+
     artist: {
         display: "flex",
         flexDirection: "row",

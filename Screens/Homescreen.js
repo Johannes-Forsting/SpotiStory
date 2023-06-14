@@ -8,12 +8,12 @@ export default function HomeScreen({ navigation }) {
                 <Text style={styles.header}>SPOTI</Text>
                 <Text style={[styles.header, styles.indented]}>STORY</Text>
             </View>
-            <Image
-                style={styles.logo}
-                source={require("../assets/SpotifyLogo.png")}
-            />
-
-            <ScrollView></ScrollView>
+            <View style={styles.spaceProper}>
+                <Image
+                    style={styles.logo}
+                    source={require("../assets/SpotifyLogo.png")}
+                />
+            </View>
             <View><Footer navigation={navigation}/></View>
         </View>
     );
@@ -43,5 +43,9 @@ const styles = StyleSheet.create({
         marginTop: "10%",
         width: 200,
         height: 200
-    }
+    },
+
+    spaceProper: {
+        flex: 1
+    },
 });

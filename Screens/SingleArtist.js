@@ -122,18 +122,16 @@ export default function SingleArtist({ navigation }) {
                 }}
             />
             <Text style={styles.header}>{artist.name}</Text>
-
-            <View style={styles.topTracksView}>
-                <Text style={styles.topTrackHeader}>TOP TRACKS</Text>
-                {topTracks.slice(0, 5).map((track, index) => (
-                    <Text style={styles.trackName} key={track.id}>
-                        {`${index + 1}. ${track.name}`}
-                    </Text>
-                ))}
+            <View style={styles.spaceProper}>
+                <View style={styles.topTracksView}>
+                    <Text style={styles.topTrackHeader}>Top tracks</Text>
+                    {topTracks.slice(0, 5).map((track, index) => (
+                        <Text style={styles.trackName} key={track.id}>
+                            {`${index + 1}. ${track.name}`}
+                        </Text>
+                    ))}
+                </View>
             </View>
-
-
-            <ScrollView></ScrollView>
             <View><Footer navigation={navigation}/></View>
         </View>
     );
@@ -184,17 +182,24 @@ const styles = StyleSheet.create({
         height: 250,
         borderRadius: 200
     },
+
+    spaceProper: {
+        flex: 1,
+        width: "100%",
+        alignItems: "center",
+        marginTop: 20
+    },
+
     topTracksView: {
         backgroundColor: "#404040",
         width: "90%",
-        padding: 15
+        padding: 15,
     },
     topTrackHeader: {
         alignSelf: "center",
         fontSize: 20,
         fontWeight: "bold",
         color: "#1DB954",
-        marginBottom: 30
     },
     trackName: {
         color: "#FFFFFF",

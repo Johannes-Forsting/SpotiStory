@@ -53,18 +53,20 @@ export default  function Searching({navigation}) {
                 </TouchableOpacity>
 
             </View>
-            <ScrollView style={styles.resultsContainer}>
-                {artists.map((artist) => (
-                    <TouchableOpacity
-                        key={artist.id}
-                        style={styles.itemButton}
-                        onPress={() => navigation.navigate("SingleArtist", {artist})}
-                    >
-                        <Text style={styles.itemText}>{artist.name}</Text>
-                    </TouchableOpacity>
-                ))}
-            </ScrollView>
-            <ScrollView></ScrollView>
+            <View style={styles.spaceProper}>
+                <ScrollView style={styles.resultsContainer}>
+                    {artists.map((artist) => (
+                        <TouchableOpacity
+                            key={artist.id}
+                            style={styles.itemButton}
+                            onPress={() => navigation.navigate("SingleArtist", {artist})}
+                        >
+                            <Text style={styles.itemText}>{artist.name}</Text>
+                        </TouchableOpacity>
+                    ))}
+                </ScrollView>
+            </View>
+
             <View><Footer navigation={navigation}/></View>
         </View>
     );
@@ -142,5 +144,10 @@ const styles = StyleSheet.create({
         fontSize: 30,
         paddingBottom:15,
         fontWeight: "bold"
-    }
+    },
+
+    spaceProper: {
+        flex: 1,
+        marginBottom: 25
+    },
 })

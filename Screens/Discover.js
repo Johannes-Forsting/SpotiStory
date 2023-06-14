@@ -114,7 +114,6 @@ export default function Discover({ navigation }) {
                     })
                 )}
             </View>
-            <ScrollView></ScrollView>
             <View><Footer navigation={navigation}/></View>
         </View>
     );
@@ -151,6 +150,7 @@ const styles = StyleSheet.create({
     },
 
     categoriesContainer:{
+        flex: 1,
         display:"flex",
         flexDirection:"row",
         flexWrap:"wrap",
