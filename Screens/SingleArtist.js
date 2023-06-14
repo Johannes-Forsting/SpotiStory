@@ -1,11 +1,10 @@
-
-import {StyleSheet, Text, View, Button, ScrollView, Image, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, ScrollView, Image, TouchableOpacity} from 'react-native';
 import Footer from '../config/Footer';
 import React, {useEffect, useState} from "react";
 import { useRoute } from '@react-navigation/native';
 import {useOptions} from "../config/TokenHandler";
 import {database} from "../config/firebase";
-import {readDB} from "../Screens/Saved";
+import {readDB} from "./Saved";
 import {collection, doc, addDoc, deleteDoc, where, query , getDocs} from "firebase/firestore";
 const artistCollection = 'artists'
 
@@ -72,7 +71,7 @@ export default function SingleArtist({ navigation }) {
     const options = useOptions();
 
 
-    var buttonProps = {
+    let buttonProps = {
         style: isInList(artist, artists) ? [styles.button, styles.following]: [styles.button, styles.notFollowing],
         onPress :() => saveArtist(artist, artists)
     };

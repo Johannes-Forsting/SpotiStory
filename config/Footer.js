@@ -7,25 +7,25 @@ export default class Footer extends React.Component {
         return (
             <View style={styles.footer}>
                 <TouchableOpacity
-                    style={[styles.button, styles.button1]}
+                    style={[styles.button]}
                     onPress={() => navigation.navigate("Home")}
                 >
                     <Text style={styles.buttonText}>Home</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={[styles.button, styles.button2]}
+                    style={[styles.button]}
                     onPress={() => navigation.navigate("Search")}
                 >
                     <Text style={styles.buttonText}>Search</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={[styles.button, styles.button1]}
+                    style={[styles.button]}
                     onPress={() => navigation.navigate("Saved")}
                 >
                     <Text style={styles.buttonText}>Saved</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={[styles.button, styles.button2]}
+                    style={[styles.button]}
                     onPress={() => navigation.navigate("Discover")}
                 >
                     <Text style={styles.buttonText}>Discover</Text>
@@ -40,9 +40,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
-        backgroundColor: '#353535',
-        height: 50,
-
+        height: 50
     },
 
     button: {
@@ -57,6 +55,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         color: "#FFFFFF",
-        textAlign: 'center',
+        textAlign: 'center'
     },
 });

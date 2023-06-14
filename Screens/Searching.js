@@ -1,19 +1,19 @@
-import {StyleSheet, Text, View, Button, ScrollView, TextInput, TouchableOpacity } from 'react-native';
+import {StyleSheet, Text, View, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import Footer from '../config/Footer';
 import React from "react";
-import { useToken, useOptions } from '../config/TokenHandler';
+import { useOptions } from '../config/TokenHandler';
 
 export async function findArtists(options, artist){
     const getArtists = await fetch("https://api.spotify.com/v1/search?q=" + artist.toString() + "&type=artist", options)
         .then((res) => res.json())
         .catch((error) => console.error(error));
+
     const artists = []
 
     for (let i = 0; i < 50; i++) {
         if (getArtists.artists.items[i]){
             artists.push(getArtists.artists.items[i])
         }
-
     }
 
     return artists
@@ -60,7 +60,7 @@ export default  function Searching({navigation}) {
                         style={styles.itemButton}
                         onPress={() => navigation.navigate("SingleArtist", {artist})}
                     >
-                        <Text key={artist.id} style={styles.itemText}>{artist.name}</Text>
+                        <Text style={styles.itemText}>{artist.name}</Text>
                     </TouchableOpacity>
                 ))}
             </ScrollView>

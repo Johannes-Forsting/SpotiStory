@@ -1,7 +1,7 @@
 import {CLIENT_ID, CLIENT_SECRET} from '@env';
 import React, {useEffect, useState} from "react";
 
-export async function getTokenData() {
+async function getTokenData() {
     const options = {
         method: 'POST',
         headers: {
@@ -14,21 +14,8 @@ export async function getTokenData() {
         .catch((error) => console.error(error));
     return getTokenData
 }
-/*
-export function useToken() {
-    const [token, setToken] = useState(null);
-    async function fetchData() {
-        const tokenData = await getTokenData();
-        setToken(tokenData);
-    }
-    useEffect(() => {
-        fetchData();
-    }, []);
-    return token;
-}
- */
 
-export async function getOptions(token) {
+async function getOptions(token) {
     return {
         method: 'GET',
         headers: {

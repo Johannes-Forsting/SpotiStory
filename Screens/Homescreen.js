@@ -1,7 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
-import {StyleSheet, Button, View, ScrollView, Text, Image, ImageBackgroundBase} from 'react-native';
+import {StyleSheet, View, ScrollView, Text, Image} from 'react-native';
 import Footer from '../config/Footer';
-import React, {useState, useEffect} from "react";
 
 export default function HomeScreen({ navigation }) {
     return (
@@ -29,15 +27,6 @@ const styles = StyleSheet.create({
         display: "flex",
         paddingTop: "50%",
     },
-    input: {
-        borderWidth: 2,
-        width: "50%",
-        height: 40
-    },
-
-    webview: {
-        backgroundColor: "red"
-    },
 
     header: {
         color: "#1DB954",
@@ -48,11 +37,6 @@ const styles = StyleSheet.create({
 
     indented: {
         marginLeft: "15%",
-    },
-
-    buttons: {
-        display: "flex",
-        flexDirection: "row"
     },
 
     logo: {

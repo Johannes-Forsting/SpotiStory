@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-import { StatusBar } from 'expo-status-bar';
-import { ScrollView, StyleSheet, Text, View, Button, TextInput, TouchableOpacity } from 'react-native';
-
-
 import HomeScreen from "./Screens/Homescreen";
 import Discover from "./Screens/Discover";
 import Searching from "./Screens/Searching";
