@@ -28,7 +28,7 @@ function checkName(name, maxLength){
     }
 }
 
-export default function Saved({ navigation }) {
+export default function Saved({navigation}) {
     const [artists, setArtists] = useState([]);
 
 
@@ -38,7 +38,9 @@ export default function Saved({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.header} >YOUR SAVED ARTISTS</Text>
+            <View style={styles.headerContainer}>
+                <Text style={styles.header} >Your saved artists</Text>
+            </View>
             <View style={styles.artists}>
                 <ScrollView style={styles.scroll}>
                     {artists.map(artist => (
@@ -62,6 +64,7 @@ export default function Saved({ navigation }) {
             <ScrollView></ScrollView>
             <View>
                 <Footer navigation={navigation} />
+
             </View>
         </View>
     );
@@ -77,12 +80,22 @@ const styles = StyleSheet.create({
     },
     header: {
         color: "#FFFFFF",
-        fontSize: 35,
+        fontSize: 30,
+        fontWeight: "bold"
+    },
+    headerContainer:{
+        display:"flex",
+        flexDirection:"row",
+        width:"100%",
+        alignItems: "flex-start",
+        paddingHorizontal:"10%",
+        justifyContent:"space-between",
     },
     artists: {
         display: "flex",
         width: "100%",
         justifyContent: 'center',
+
         alignItems: "center",
         marginTop: 30
 

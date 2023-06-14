@@ -1,13 +1,4 @@
-import {
-    ActivityIndicator,
-    Image,
-    ImageBackground,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View
-} from 'react-native';
+import {ActivityIndicator, Image, ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Footer from '../config/Footer';
 import React, {useCallback, useEffect, useState} from "react";
 import {useOptions} from "../config/TokenHandler";
@@ -31,7 +22,6 @@ function getRandomQuery() {
             break;
     }
     randomSearch = encodeURIComponent(randomSearch)
-    console.log(randomSearch)
     return randomSearch;
 }
 
@@ -51,7 +41,7 @@ export default function Discover({ navigation }) {
         try {
             if (options) {
                 let tempItemsArray = [];
-                let fetchedIds = new Set();
+                let fetchedIds = [];
                 while (tempItemsArray.length < 8) {
                     const response = await fetchItem(getRandomQuery(), types[1], getRandomOffset(), options);
                     let item;
@@ -70,9 +60,8 @@ export default function Discover({ navigation }) {
                             break
                     }
                     // Only add item to array if it is not undefined and not already fetched
-                    if (item && !fetchedIds.has(item.id)) {
-                        console.log(item)
-                        fetchedIds.add(item.id);
+                    if (item && !fetchedIds.includes(item.id)) {
+                        fetchedIds.push(item.id);
                         tempItemsArray.push(item);
                     }
                 }
@@ -122,9 +111,8 @@ export default function Discover({ navigation }) {
                                 </View>
                             </TouchableOpacity>
                         )
-                        }
-
-                ))}
+                    })
+                )}
             </View>
             <ScrollView></ScrollView>
             <View><Footer navigation={navigation}/></View>
@@ -202,14 +190,14 @@ const styles = StyleSheet.create({
         width:"100%",
         borderRadius:.1,
         justifyContent: "center",
-        alignItems: "center",
+        alignItems: "center"
     },
 
     noImageBackground: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#1Db954", // Use any color you like
-    },
+        backgroundColor: "#1Db954"
+    }
 
 });

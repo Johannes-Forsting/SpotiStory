@@ -22,16 +22,15 @@ async function findTopTracks(options, artistID) {
 
 
 function isInList(artist, listOfArtists){
-    let isInList = false
     for (let i = 0; i < listOfArtists.length; i++) {
         if(listOfArtists[i].id === artist.id){
-            isInList = true
+            return true
         }
     }
-    return isInList
+    return false
 }
 
-async function saveArtist(artist, listOfArtists){
+async function saveOrDeleteArtist(artist, listOfArtists){
     if(isInList(artist, listOfArtists)){
         await removeFromList(artist);
     }else{
@@ -71,13 +70,6 @@ export default function SingleArtist({ navigation }) {
     const options = useOptions();
 
 
-    let buttonProps = {
-        style: isInList(artist, artists) ? [styles.button, styles.following]: [styles.button, styles.notFollowing],
-        onPress :() => saveArtist(artist, artists)
-    };
-
-
-
 
     useEffect(() => {
         const fetchTopTracks = async () => {
@@ -108,13 +100,15 @@ export default function SingleArtist({ navigation }) {
                     style={styles.button}
                     onPress={() => navigation.goBack()}
                 >
-                    <Text style={styles.buttonText}
-                    >Back</Text>
+                    <Text style={styles.buttonText}>Back</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity {...buttonProps}>
+                <TouchableOpacity
+                    style={isInList(artist, artists) ? [styles.button, styles.following]: [styles.button, styles.notFollowing]}
+                    onPress={() => saveOrDeleteArtist(artist, artists)}
+                >
                     <Text
-                        style={isInList(artist, artists) ? styles.buttonTextFollowing: styles.buttonTextNotFollowing}
+                        style={isInList(artist, artists) ? styles.buttonTextFollowing : styles.buttonTextNotFollowing}
                     >
                         {getFollowText(artist, artists)}</Text>
                 </TouchableOpacity>
